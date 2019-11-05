@@ -139,21 +139,6 @@ From the dataset we can access the actual data and information about it
  'data_file': 'content/datasets/data/eight_schools.json',
  'added_by': 'Mans Magnusson',
  'added_date': '2019-08-12'}
-
-
->>> po.model_info
-
-{'keywords': ['bda3_example', 'hiearchical'],
- 'description': 'A centered hiearchical model for the 8 schools example of Rubin (1981)',
- 'urls': ['http://www.stat.columbia.edu/~gelman/arm/examples/schools'],
- 'title': 'A centered hiearchical model for 8 schools',
- 'references': ['rubin1981estimation', 'gelman2013bayesian'],
- 'model_code': {'stan': 'content/models/stan/eight_schools_centered.stan'},
-=======
->>>>>>> Stashed changes
- 'added_by': 'Mans Magnusson',
- 'added_date': '2019-08-12'}
-
 ```
 For convenience there is a shortcut `po.data()` that is the same as `po.dataset.data()`.
 
