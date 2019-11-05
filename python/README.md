@@ -18,7 +18,7 @@ The included database contains convenience functions to access data, model code 
 First we create the posterior database to use, here the cloned posterior database.
 
 ```python
->>> from posterior_db import PosteriorDatabase, Posterior
+>>> from posterior_db import PosteriorDatabase
 >>> import os
 >>> my_pdb = PosteriorDatabase(os.getcwd())
 ```
@@ -65,25 +65,28 @@ In the same fashion, we can list data and models included in the database as
 
 The posterior's name is made up of the data and model fitted
 to the data. Together, these two uniquely define a posterior distribution.
-To access a posterior object we can use the model name.
+To access a posterior object we can use the posterior name.
 
 ```python
->>> po = Posterior("eight_schools-eight_schools_centered", my_pdb)
+>>> po = my_pdb.posterior("eight_schools-eight_schools_centered")
 ```
 
-From the posterior object, we can access data, model code (i.e., Stan code
-in this case) and a lot of other useful information.
+From the posterior we can access the dataset and the model
 
 ```python
->>> po.dataset()
+>>> mo = po.model
+>>> da = po.dataset
+```
+We can access the same model and dataset also directly from the posterior database
+```python
+>>> mo = my_pdb.model("8_schools_centered")
+>>> da = my_pdb.dataset("8_schools")
+```
 
-{'J': 8,
- 'y': [28, 8, -3, 7, -1, 1, 18, 12],
- 'sigma': [15, 10, 16, 11, 9, 11, 10, 18]}
+From the model we can access model code and information about the model
 
->>> sc = po.stan_code()
->>> print(sc)
-
+```python
+>>> mo.code("stan")
 data {
   int <lower=0> J; // number of schools
   real y[J]; // estimated treatment
@@ -100,27 +103,34 @@ model {
   y ~ normal(theta , sigma);
   mu ~ normal(0, 5);
 }
-
+>>> mo.code_file("stan")
+'/home/eero/posterior_database/content/models/stan/eight_schools_centered.stan'
+>>> mo.information
+{'keywords': ['bda3_example', 'hiearchical'],
+ 'description': 'A centered hiearchical model for the 8 schools example of Rubin (1981)',
+ 'urls': ['http://www.stat.columbia.edu/~gelman/arm/examples/schools'],
+ 'title': 'A centered hiearchical model for 8 schools',
+ 'references': ['rubin1981estimation', 'gelman2013bayesian'],
+ 'added_by': 'Mans Magnusson',
+ 'added_date': '2019-08-12'}
 ```
+Note that the references are referencing to BibTeX items that can be found in `content/references/references.bib`.
 
-We can also access the paths to data and model code files
+For convenience there is also a shortcut `po.code("stan")` that is the same as `po.model.code("stan")`.
+
+From the dataset we can access the actual data and information about it
 
 ```python
->>> dfp = po.dataset_file_path()
->>> dfp
+>>> da.data()
+
+{'J': 8,
+ 'y': [28, 8, -3, 7, -1, 1, 18, 12],
+ 'sigma': [15, 10, 16, 11, 9, 11, 10, 18]}
+
+>>> da.data_file()
 '/tmp/tmpx16edu0w'
 
->>> scfp = po.stan_code_file_path()
->>> scfp
-
-'/home/eero/posterior_database/content/models/stan/eight_schools_centered.stan'
-```
-
-We can also access information regarding the model and the data used to compute the posterior.
-
-```python
->>> po.data_info
-
+>>> da.information
 {'keywords': ['bda3_example'],
  'description': 'A study for the Educational Testing Service to analyze the effects of\nspecial coaching programs on test scores. See Gelman et. al. (2014), Section 5.5 for details.',
  'urls': ['http://www.stat.columbia.edu/~gelman/arm/examples/schools'],
@@ -139,12 +149,13 @@ We can also access information regarding the model and the data used to compute 
  'title': 'A centered hiearchical model for 8 schools',
  'references': ['rubin1981estimation', 'gelman2013bayesian'],
  'model_code': {'stan': 'content/models/stan/eight_schools_centered.stan'},
+=======
+>>>>>>> Stashed changes
  'added_by': 'Mans Magnusson',
  'added_date': '2019-08-12'}
 
 ```
-
-Note that the references are referencing to BibTeX items that can be found in `content/references/references.bib`.
+For convenience there is a shortcut `po.data()` that is the same as `po.dataset.data()`.
 
 To access gold standard posterior draws we can use `gold_standard` as follows (NOTE not implemented yet).
 
