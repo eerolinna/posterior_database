@@ -118,16 +118,16 @@ Note that the references are referencing to BibTeX items that can be found in `c
 
 For convenience there is also a shortcut `po.code("stan")` that is the same as `po.model.code("stan")`.
 
-From the dataset we can access the actual data and information about it
+From the dataset we can access the data values and information about it
 
 ```python
->>> da.data()
+>>> da.values()
 
 {'J': 8,
  'y': [28, 8, -3, 7, -1, 1, 18, 12],
  'sigma': [15, 10, 16, 11, 9, 11, 10, 18]}
 
->>> da.data_file()
+>>> da.file()
 '/tmp/tmpx16edu0w'
 
 >>> da.information
@@ -140,7 +140,7 @@ From the dataset we can access the actual data and information about it
  'added_by': 'Mans Magnusson',
  'added_date': '2019-08-12'}
 ```
-For convenience there is a shortcut `po.data()` that is the same as `po.dataset.data()`.
+For convenience there is a shortcut `po.data_values()` that is the same as `po.dataset.values()`.
 
 To access gold standard posterior draws we can use `gold_standard` as follows (NOTE not implemented yet).
 
